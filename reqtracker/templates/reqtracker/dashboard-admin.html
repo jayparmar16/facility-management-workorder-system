@@ -1,0 +1,424 @@
+{% extends 'reqtracker/dashboard.html' %} {% block content %}
+
+<!-- ######### PIE CHARTS ######### -->
+<div class="container" style="width: 75%;padding-top: 100px;">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card card-body">
+        <h5>Status</h5>
+        <canvas id="pie-chart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card card-body">
+        <h5>Maintenance Type</h5>
+        <canvas id="pie-chart1"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="row" style='padding-top:50px;'>
+    <div class="col-md-6">
+      <div class="card card-body">
+        <h5>Civil Works</h5>
+        <canvas id="pie-chart2"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card card-body">
+        <h5>MEP Works</h5>
+        <canvas id="pie-chart3"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ######### PIE CHART - END ######### -->
+
+<!-- ######### BUTTONS  ######### -->
+<div class="user-cont" style="padding: 100px 20px 20px 20px">
+  <h5>Summary</h5>
+    <div class="row">
+      <div class="col-md-3">
+        <button
+          id = 't'
+          class="btn btn-primary btn-md btn-block"
+          >Today's Requests</a
+          ></button>
+      </div>
+      <div class="col-md-3">
+        <button
+          id='p'
+          class="btn btn-primary btn-md btn-block"
+          >Pending</a
+        ></button>
+      </div>
+      <div class="col-md-3">
+        <button
+          id='inp'
+          class="btn btn-primary btn-md btn-block"
+          >In Progress</a
+        ></button>
+      </div>
+      <div class="col-md-3">
+        <button
+          id='c'
+          class="btn btn-primary btn-md btn-block"
+          >Completed</a
+        ></button>
+      </div>
+    </div>
+  
+<!-- ######### END BUTTONS ######### -->
+
+<!-- ######### PENDING REQUESTS ######### -->
+  <div class="row" id='pend' style="margin-right: 0px; margin-left: 0px;">
+    <div class="col-md-12">
+      <hr/>
+      
+        {% if req_pending.count == 0 %}
+          <h5 style='text-align:center'>There aren't any Pending requests at this moment !</h5>
+        {% endif %}
+        {% for o in req_pending %}
+        <table class="table table-sm">
+          <tr id='headings'>
+            <th>Request Number</th>
+            <th>Nature</th>
+            <th>Request Date</th>
+            <th>Expected Date</th>
+            <th>Status</th>
+            <th></th>
+            <th>  </th>
+          </tr>
+
+          <tr id='values'>
+            <td>{{o.Request_Number}}</td>
+            <td>{{o.Maintenance_Type}}</td>
+            <td>{{o.date_created | date:"F d Y"}}</td>
+            {% if o.Type_Nature == 'Normal' %}
+            <td>{{o.expected_date_n | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Urgent' %}
+            <td>{{o.expected_date_u | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Emergency' %}
+            <td>{{o.expected_date_i | date:"F d Y"}}</td>
+            {% else %}
+            <td>{{o.expected_date_o | date:"F d Y"}}</td>
+            {% endif %}
+            <td>{{o.status}}</td>
+            <td><a href="/view_request/{{o.id}}" class="btn btn-primary btn-sm btn-block">View Request</a></td>
+            <td style='text-align:center;'><a href="/initial/{{o.Request_Number}}/estimation_report/" class="btn btn-xs" style='color:white;padding-top: 0px;'>View Estimate</a></td>
+          </tr>
+        </table>
+        {% endfor %} 
+      
+    </div>
+  </div>
+  <!-- ######### END - PENDING REQUESTS ######### -->
+
+  <!-- ######### IN-PROGRESS REQUESTS ######### -->
+  <div class="row" id='in' style="margin-right: 0px; margin-left: 0px; display: none;">
+    <div class="col-md-12">
+      <hr/>
+      
+        {% if req_in.count == 0 %}
+          <h5 style='text-align:center'>There aren't any In-Progress requests at this moment !</h5>
+        {% endif %}
+        {% for o in req_in %}
+        <table class="table table-sm">
+          <tr id='headings'>
+            <th>Request Number</th>
+            <th>Nature</th>
+            <th>Request Date</th>
+            <th>Expected Date</th>
+            <th>Status</th>
+            <th></th>
+            <th></th>
+          </tr>
+ 
+          <tr id='values'>
+            <td>{{o.Request_Number}}</td>
+            <td>{{o.Maintenance_Type}}</td>
+            <td>{{o.date_created | date:"F d Y"}}</td>
+            {% if o.Type_Nature == 'Normal' %}
+            <td>{{o.expected_date_n | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Urgent' %}
+            <td>{{o.expected_date_u | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Emergency' %}
+            <td>{{o.expected_date_i | date:"F d Y"}}</td>
+            {% else %}
+            <td>{{o.expected_date_o | date:"F d Y"}}</td>
+            {% endif %}
+            <td>{{o.status}}</td>
+            <td><a href="/view_request/{{o.id}}" class="btn btn-primary btn-sm btn-block">View Request</a></td>
+            <td style='text-align:center;'><a href="/initial/{{o.Request_Number}}/estimation_report/" class="btn btn-xs" style='color:white;padding-top: 0px;'>View Estimate</a></td>
+          </tr>
+        </table>
+        {% endfor %} 
+      
+    </div>
+  </div>
+  <!-- ######### END - IN PROGRESS REQUESTS ######### -->
+
+  <!-- ######### COMPLETED REQUEST ######### -->
+  <div class="row" id='comp' style="margin-right: 0px; margin-left: 0px; display: none;">
+    <div class="col-md-12">
+      <hr/>
+      
+        {% if req_completed.count == 0 %}
+          <h5 style='text-align:center'>There aren't any completed requests at this moment !</h5>
+        {% endif %}
+        {% for o in req_completed %}
+        <table class="table table-sm">
+          <tr id='headings'>
+            <th>Request Number</th>
+            <th>Nature</th>
+            <th>Request Date</th>
+            <th>Expected Date</th>
+            <th>Status</th>
+            <th></th>
+            <th></th>
+          </tr>
+
+          <tr id='values'>
+            <td>{{o.Request_Number}}</td>
+            <td>{{o.Maintenance_Type}}</td>
+            <td>{{o.date_created | date:"F d Y"}}</td>
+            {% if o.Type_Nature == 'Normal' %}
+            <td>{{o.expected_date_n | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Urgent' %}
+            <td>{{o.expected_date_u | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Emergency' %}
+            <td>{{o.expected_date_i | date:"F d Y"}}</td>
+            {% else %}
+            <td>{{o.expected_date_o | date:"F d Y"}}</td>
+            {% endif %}
+            <td>{{o.status}}</td>
+            <td><a href="/view_request/{{o.id}}" class="btn btn-primary btn-sm btn-block">View Request</a></td>
+            <td style='text-align:center;'><a href="/initial/{{o.Request_Number}}/estimation_report/" class="btn btn-xs" style='color:white;padding-top: 0px;'>View Estimate</a></td>
+          </tr>
+        </table>
+        {% endfor %} 
+     
+    </div>
+  </div>
+  <!-- ######### END - COMPLETED REQUESTS ######### -->
+
+  <!-- ######### TODAY's REQUESTS ######### -->
+  <div
+    id = 'today'
+    class="row"
+    style="padding-top: 10px; margin-right: 0px; margin-left: 0px;display:none;"
+  >
+    <div class="col-md-12">
+      <hr />
+      {% if tr == 0 %}
+        <h5 style='text-align:center'>There aren't any pending requests as of today!</h5>
+      {% endif %}
+      {% for j in tr %}
+      
+        <table class="table table-sm">
+          <tr id='headings'>
+            <th>Request Number</th>
+            <th>Nature</th>
+            <th>Request Date</th>
+            <th>Expected Date</th>
+            <th>Status</th>
+            <th></th>
+            <th></th>
+          </tr>
+
+          <tr id='values'>
+            <td>{{j.Request_Number}}</td>
+            <td>{{j.Maintenance_Type}}</td>
+            <td>{{j.date_created | date:"F d Y"}}</td>
+            {% if j.Type_Nature == 'Normal' %}
+            <td>{{j.expected_date_n | date:"F d Y"}}</td>
+            {% elif j.Type_Nature == 'Urgent' %}
+            <td>{{j.expected_date_u | date:"F d Y"}}</td>
+            {% elif j.Type_Nature == 'Emergency' %}
+            <td>{{j.expected_date_i | date:"F d Y"}}</td>
+            {% else %}
+            <td>{{j.expected_date_o | date:"F d Y"}}</td>
+            {% endif %}
+            <td>{{j.status}}</td>
+            <td><a href="/view_request/{{j.id}}" class="btn btn-primary btn-sm btn-block">View Request</a></td>
+            <td style='text-align:center;'><a href="/initial/{{j.Request_Number}}/estimation_report/" class="btn btn-xs" style='color:white;padding-top: 0px;'>View Estimate</a></td>
+          </tr>
+        </table>
+      
+      {% endfor %}
+    </div>
+  </div> 
+  <!-- ######### END - TODAY'S REQUESTS ######### -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script><script>
+
+  // Pie Chart for Status
+  var ctx = document.getElementById('pie-chart').getContext('2d');
+  var chart = new Chart(ctx, {
+  type: 'pie',
+  data: {
+      labels: {{labels|safe}},
+      datasets: [{
+          label: 'Status',
+          backgroundColor: ['#017371', '#56FCA2', '#A09BD7'],
+          borderColor: '#F5F5F5',
+          data: {{data|safe}}
+      }]
+  },
+
+  options: {
+    legend: {
+          labels: {
+            fontColor: "white",
+            fontSize : 15
+      }
+    }
+  }
+  });
+  // END - STATUS 
+
+  // Pie chart for Maintenance Type 
+var ctx1 = document.getElementById('pie-chart1').getContext('2d');
+  var chart = new Chart(ctx1, {
+  
+  type: 'pie',
+
+
+  data: {
+      labels: {{labels1|safe}},
+      datasets: [{
+          label: 'Maintenance Type',
+          backgroundColor: ['#017371', '#56FCA2', '#A09BD7'],
+          borderColor: '#F5F5F5',
+          data: {{data1|safe}}
+      }]
+  },
+
+  options: {
+    legend: {
+          labels: {
+            fontColor: "white",
+            fontSize : 15
+      }
+    }
+  }
+  });
+  // END 
+
+  // Bar chart for type of Civil works
+var ctx2 = document.getElementById('pie-chart2').getContext('2d');
+  var chart = new Chart(ctx2, {
+  
+  type: 'bar',
+
+
+  data: {
+      labels: {{labels2|safe}},
+      datasets: [{
+          label: ['Painting'],
+          backgroundColor: ['#017371', '#56FCA2', '#A09BD7'],
+          borderColor: '#F5F5F5',
+          data: {{data2|safe}}
+      }]
+  },
+
+  options: {
+    legend: {
+          labels: {
+            fontColor: "white",
+            fontSize : 15
+      }
+    },
+        barValueSpacing: 20,
+        scales: {
+        yAxes: [{
+            ticks: {
+            fontColor: "white",
+            fontSize: 15,
+            min: 0,
+            }
+        }],
+        xAxes: [{
+            ticks: {
+            fontColor: "white",
+            fontSize: 15,
+            min: 0,
+            }
+        }]
+        }
+  }
+  });
+  //END
+ 
+// BAR CHART for MEP WORKS
+var ctx3 = document.getElementById('pie-chart3').getContext('2d');
+  var chart = new Chart(ctx3, {
+  
+  type: 'bar',
+
+
+  data: {
+      labels: {{labels3|safe}},
+      datasets: [{
+          label: 'MEP Work',
+          backgroundColor: ['#017371', '#56FCA2', '#A09BD7'],
+          borderColor: '#F5F5F5',
+          data: {{data3|safe}}
+      }]
+  },
+
+  options: {
+    legend: {
+          labels: {
+            fontColor: "white",
+            fontSize : 15
+      }
+    },
+        barValueSpacing: 20,
+        scales:{
+        yAxes: [{
+            ticks: {
+            fontColor: "white",
+            fontSize: 15,
+            min: 0,
+            }
+        }],
+        xAxes:[{
+            ticks: {
+            fontColor: "white",
+            fontSize: 15,
+            min: 0,
+            }
+        }]
+        }
+  }
+  });
+// END
+  
+  // On page loading of pending, in-p , completed and today's requests
+  document.getElementById("p").addEventListener("click", function() {
+    document.getElementById("pend").style.display = "block";
+    document.getElementById("in").style.display = "none";
+    document.getElementById("comp").style.display = "none";
+    document.getElementById("today").style.display = "none";
+  });
+  document.getElementById("inp").addEventListener("click", function() {
+    document.getElementById("pend").style.display = "none";
+    document.getElementById("in").style.display = "block";
+    document.getElementById("comp").style.display = "none";
+    document.getElementById("today").style.display = "none";
+  });
+  document.getElementById("c").addEventListener("click", function() {
+    document.getElementById("pend").style.display = "none";
+    document.getElementById("in").style.display = "none";
+    document.getElementById("comp").style.display = "block";
+    document.getElementById("today").style.display = "none";
+  });
+  document.getElementById("t").addEventListener("click", function() {
+    document.getElementById("pend").style.display = "none";
+    document.getElementById("in").style.display = "none";
+    document.getElementById("comp").style.display = "none";
+    document.getElementById("today").style.display = "block";
+  });
+</script>
+{% endblock %}

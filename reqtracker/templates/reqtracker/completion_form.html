@@ -1,0 +1,158 @@
+{% extends 'reqtracker/dashboard.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    h6{
+      color:white;
+    }
+    #id_work_details{
+        width:230px;
+    }
+    tr{
+      background-color:white;
+      color:black;
+      border:1px;
+    }
+    table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    }
+    th{
+      font-weight: 1000;
+    }
+  </style>
+  <div class="row" style="margin-right: 0px; margin-left: 0px;margin-top:60px; padding: 40px 0px 25px 0px">
+    <div class="col-md-5">
+        <hr>
+        <h5>Form</h5>
+        <hr>
+        <div class="col-lg-7 mx-auto">
+          <div class="card mt-2 mx-auto p-4" style="background: #5881a7 !important;">
+            <div class="card-body">
+              <div class="container">
+                <form id="contact-form" role="form" method="post" action="">
+                  {% csrf_token %}
+                  <div class="row">
+                    <table>
+                      <div class="col-md-12">
+                        <h6>Request Number</h6>
+                        <div class="form-group">
+                          <label for="id_Request_Number"
+                            >{{form.mr}}</label
+                          >
+                        </div>
+                      </div> 
+                      <div class="col-md-12">
+                      <h6>Technician Name</h6>
+                        <div class="form-group">
+                          <label for="id_tech_name"
+                            >{{form.tech_name}}</label
+                          >
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                      <h6>Item</h6>
+                        <div class="form-group">
+                          <label for="id_item"
+                            >{{form.item}}</label
+                          >
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <h6>Quantity</h6>
+                          <div class="form-group">
+                            <label for="id_quantity"
+                              >{{form.quantity}}</label
+                            >
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <h6>Unit</h6>
+                          <div class="form-group">
+                            <label for="id_unit"
+                              >{{form.unit}}</label
+                            >
+                          </div>
+                      </div>  
+                      <div class="col-md-12">
+                      <h6>Work Details</h6>
+                        <div class="form-group" id='id_work_det'>
+                          <label for="id_work_details" 
+                            >{{form.work_details}}</label
+                          >
+                        </div>
+                      </div>
+                    </table>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-success btn-block">
+                      Update
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  {% if requ.count > 0 %}
+    <div class="col-md-7">
+        <hr>
+        <h5>
+            Completion Report for <strong><span id='rq'></span></strong>
+        </h5>
+        <hr>
+        {% for i in requ %}
+        <table class="table table-sm">
+            
+            <tr>
+                <th>Request Number</th>
+                <td>{{i.mr}}</td>
+            </tr>
+            <tr>
+                <th>Technician</th>
+                <td>{{i.tech_name}}</td>
+            </tr>
+            <tr>
+                <th>Date Created</th>
+                <td>{{i.date_created}}</td>
+            </tr>
+            <tr>
+                <th>Item</th>
+                <td>{{i.item}}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{i.quantity}}</td>
+            </tr>
+            <tr>
+              <th>Unit</th>
+              <td>{{i.unit}}</td>
+          </tr>
+            <tr>
+                <th>Work Details</th>
+                <td>{{i.work_details}}</td>
+            </tr>
+            
+        </table>
+        <hr>
+        {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+<script>
+    // Setting request number for the estimation automatically
+    var url = window.location.pathname;
+    console.log(url);
+    var patt = /RM\d+/;
+    var res = patt.exec(url);
+    var r = document.getElementById("id_mr").value = res;
+    document.getElementById('rq').innerHTML = res;
+    console.log(res);
+</script>
+{% endblock %}

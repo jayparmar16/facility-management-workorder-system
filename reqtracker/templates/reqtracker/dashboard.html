@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link rel="stylesheet" href="{% static '/reqtracker/css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <style>
+    .alert-info{
+      background-color: #021f51!important;
+      border-color: #021f51!important;
+      color:white;
+    }
+    *{
+      font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif; font-weight: 500;
+       font-variant: normal;  font-size: 17px;
+    }
+    body{
+    background: 	white;
+    }
+    .btn{
+      background-color: #255da9!important;
+      border-radius: 8px;
+      border-color: #081220 !important;
+    }
+    .btn:hover {
+    background-color: #FD5956 !important; 
+    color: white;
+    }
+    .card{
+      background-color:	#5881a7;
+    }
+    #headings{
+      background-color:	#021f51;
+      color: white;
+    }
+
+    #values{
+      background-color:#6f99bf;
+      color: white;
+    }
+    h5{background-color:#021f51;color:whitesmoke;text-align:center;border: 1px solid #021f51;
+          border-radius: 8px; padding-top: 3px; padding-bottom: 3px;
+    }
+    .table td, .table th{
+      border-top: 0px !important;
+      padding-top: 8px;
+    }
+    .navbar-brand{
+      font-size: 23px !important;
+    }
+    </style>
+  <body>
+    <nav class="navbar w-100 fixed-top navbar-dark bg-primary" id='nav-bar'>
+      {% if request.user.username == "admin" %}
+      <a class="navbar-brand" href="/dashboard-admin/" style='font-size: 25px;'>Facility Management Workorder System</a>
+      {% elif request.user.username == 'SPRC1' or request.user.username == 'SPRC2' or request.user.username == 'SPRMEP1' or request.user.username == 'SPRMEP2' %}
+      <a class="navbar-brand" href="/dashboard-super/">Facility Management Workorder System</a>
+      {% else %}
+      <a class="navbar-brand" href="/dashboard-user/">Facility Management Workorder System</a>
+      {% endif %} {% if request.user.is_authenticated %}
+      <a class="navbar-brand ml-auto" href="#"
+        >Welcome, <span><strong>{{request.user.username}}</strong></span></a
+      >
+      <a class="navbar-brand" href="/logout/">Logout</a>
+      {% else %}
+      <a class="navbar-brand ml-auto" href="/login/">Login</a>
+      {% endif %}
+    </nav>
+    {% if messages %} 
+    {% for message in messages %}
+    <div
+      class="alert alert-{{ message.tags }} alert-dismissible"
+      role="alert"
+      style="margin-top: 56px;margin-bottom: 0px;"
+    >
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %} 
+    {% endif %} 
+    {% block content %} 
+
+
+    {% endblock %}
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
+  </body>
+</html>

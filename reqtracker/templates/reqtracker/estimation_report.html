@@ -1,0 +1,149 @@
+{% extends 'reqtracker/dashboard.html' %} 
+{% load static %} 
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+  h6{
+    color:white;
+  }
+</style>
+<div class="row" style="margin-right: 0px; margin-left: 0px;margin-top:60px; padding: 40px 0px 25px 0px">
+  <!-- <div class="col-md-5">
+      <hr>
+      <h5><strong>Add Items</strong></h5>
+      <hr>
+      <div class="col-lg-7 mx-auto">
+        <div class="card mt-2 mx-auto p-4" style="background: #5881a7 !important;">
+          <div class="card-body">
+            <div class="container">
+              <form id="contact-form" role="form" method="post" action="">
+                {% csrf_token %}
+                <div class="row">
+                  <table>
+                    <div class="col-md-12">
+                      <h6>Request Number</h6>
+                      <div class="form-group">
+                        <label for="id_Request_Number"
+                          >{{form.mr}}</label
+                        >
+                      </div>
+                    </div> 
+                    <div class="col-md-12">
+                    <h6>Item</h6>
+                      <div class="form-group">
+                        <label for="id_item"
+                          >{{form.item}}</label
+                        >
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                    <h6>Quantity</h6>
+                      <div class="form-group">
+                        <label for="id_quantity"
+                          >{{form.quantity}}</label
+                        >
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                    <h6>Unit</h6>
+                      <div class="form-group">
+                        <label for="id_unit"
+                          >{{form.unit}}</label
+                        >
+                      </div>
+                    </div>
+                  </table>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-success btn-block">
+                    Update
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  
+{% if req.count > 0 %}
+  <div class="col-md-12">
+      {% for j in reque %}
+      <hr>
+      <h5>
+        Estimation Report for <span id='rq'>{{j.Request_Number}}</span>
+      </h5>
+      <hr>
+      {% endfor %}
+      <table class="table table-sm">
+        <tr id='headings'>
+          <th>Item Code</th>
+          <th>Item</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Unit</th>
+          <th>Total Price</th>
+          <th class='chec' hidden></th>
+          <th class='chec' hidden></th>
+        </tr>
+        {% for i in req %}
+        <tr id='values'>
+          <td>{{i.item.item_code}}</td>
+          <td>{{i.item.item}}</td>
+          <td>{{i.item.price}}</td>
+          <td>{{i.quantity}}</td>
+          <td>{{i.unit}}</td>
+          <td class="price">{{i.total_price}}</td>
+          <td class='chec' hidden><a href="/update_estimate/{{i.id}}" class="btn btn-primary btn-sm btn-block">Update</a></td>
+          <td class='chec' hidden><a href="/delete_estimate/{{i.id}}"><button class="btn btn-primary btn-sm btn-block">Delete</button></a></td>
+        </tr>
+        {% endfor %}
+      </table>
+      <div class="row" style="margin-right: 0px; margin-left: 0px">
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+          <h5>Grand Total : <span id="p"></span></h5>
+        </div>
+      </div>
+    
+  </div>
+</div>
+
+{% endif %}
+
+
+<script>
+  // Setting request number for the estimation automatically
+  var url = window.location.pathname;
+  console.log(url);
+  var patt = /RM\d+/;
+  var patt1 = /initial|final/;
+  var res = patt.exec(url);
+  var check = url.match(patt1)
+  var check1 = check.join()
+  //var r = document.getElementById("id_mr").value = res;
+  console.log(check1);
+  if (check1 == 'final'){
+    console.log('True')
+    c1 = document.getElementsByClassName('chec');
+
+    for(var i = 0; i < c1.length; i++){
+        c1[i].removeAttribute("hidden");
+    }
+  }
+
+  // Finding the total price of all estimation entries
+  function getPrice() {
+    var price = 0;
+    var arr = document.getElementsByClassName("price");
+    for (var i = 0; i < arr.length; i++) {
+      price = price + parseInt(arr[i].innerHTML);
+    }
+    document.getElementById("p").innerHTML = price;
+  }
+  getPrice();
+
+</script>
+{% endblock %}

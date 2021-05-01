@@ -1,0 +1,42 @@
+{% extends 'reqtracker/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+<style>
+  body{
+  background: url("{% static '/reqtracker/images/bg.jpg' %}") no-repeat center center fixed;  
+  background-size: cover;
+  /* background: -webkit-linear-gradient(to right, #267871, #136a8a); 
+  background: linear-gradient(to right, #267871, #136a8a);  */
+  }
+  .card{
+    background-color : #3d668b !important;
+  }
+</style>
+<div class="container py-5" style="margin-top:100px">
+  <div class="row">
+    <div class="col-md-3">
+
+    </div>
+    <div class="col-md-6">
+      <h5 style='font-size:24px'>Welcome to the Facility Management Work Order System</h5>
+      <div class="card text-light card-body">
+        <h3 style='text-align: center;'>Login</h3>
+        <form method="POST">
+          {% csrf_token %}
+          {{ login_form|crispy }}
+          <button class="btn btn-primary" type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-3">
+
+    </div>
+  </div>
+  <!-- <p class="text-center">Don't have an account? <a href="/register">Create an account</a>.</p> -->
+</div>
+<script>
+  //document.getElementById('nav-bar').style.display = "none"
+</script>
+{% endblock %}

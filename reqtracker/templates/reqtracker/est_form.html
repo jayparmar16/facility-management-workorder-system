@@ -1,0 +1,75 @@
+{% extends 'reqtracker/dashboard.html' %} {% load static %} {% block content %}
+<style>
+  h6{
+    color:white;
+  }
+</style>
+<div class="container">
+  <div class="text-center mt-5" style="padding-top: 40px">
+    <h2>Update Estimation</h2>
+  </div>
+  <div class="row">
+    <div class="col-lg-7 mx-auto">
+      <div class="card mt-2 mx-auto p-4" style="background: #5881a7 !important;">
+        <div class="card-body">
+          <div class="container">
+            <form id="contact-form" role="form" method="POST" action="">
+              {% csrf_token %}
+              <div class="row">
+                <table>
+                  <div class="col-md-12">
+                    <h6>Request Number</h6>
+                    <div class="form-group">
+                      <label for="id_mr"
+                        >{{form.mr}}</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Item</h6>
+                    <div class="form-group">
+                      <label for="id_item"
+                        >{{form.item}}</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Quantity</h6>
+                    <div class="form-group">
+                      <label for="id_quantity"
+                        >{{form.quantity}}</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Unit</h6>
+                    <div class="form-group">
+                      <label for="id_unit"
+                        >{{form.unit}}</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Work Details</h6>
+                    <div class="form-group">
+                      <label for="id_work_detials"
+                        >{{form.work_details}}</label
+                      >
+                    </div>
+                  </div>
+                </table>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-success btn-block">
+                    Update </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

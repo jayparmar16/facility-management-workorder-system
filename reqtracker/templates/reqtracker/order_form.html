@@ -1,0 +1,155 @@
+{% extends 'reqtracker/dashboard.html' %} {% load static %} {% block content %}
+
+<style>
+  h6{
+    color:white;
+  }
+</style>
+<div class="container">
+  <div class="text-center mt-5" style="padding-top: 40px">
+    <h1  style='color:black'>Maintenance Request Form</h1>
+  </div>
+  <div class="row">
+    <div class="col-lg-7 mx-auto">
+      <div class="card mt-2 mx-auto p-4">
+        <div class="card-body">
+          <div class="container">
+            <form id="contact-form" role="form" method="post" action="">
+              {% csrf_token %}
+              <div class="row">
+                <table>
+                  <div class="col-md-12">
+                    <h6>Request Number</h6>
+                    <div class="form-group">
+                      <label for="id_Request_Number"
+                        >{{form.Request_Number}}</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Maintenance</h6>
+                    <div class="form-group">
+                      <label for="id_Maintenance">{{form.Maintenance}}</label>
+                    </div>
+                  </div>
+                  <tr>
+                    <div class="col-md-12">
+                      <h6>Maintenance Type</h6>
+                      <div class="form-group">
+                        <label for="id_Maintenance_Type"
+                          >{{form.Maintenance_Type}}</label
+                        >
+                      </div>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="col-md-12" id="id_Civil">
+                      <h6>Nature Civil</h6>
+                      <div class="form-group">
+                        <label for="id_Nature_Civil"
+                          >{{form.Nature_Civil}}</label
+                        >
+                      </div>
+                    </div>
+                  </tr>
+                  <tr>
+                    <div class="col-md-12" id="id_MEP">
+                      <h6>Nature MEP</h6>
+                      <div class="form-group">
+                        <label for="id_Nature_MEP">{{form.Nature_MEP}}</label>
+                      </div>
+                    </div>
+                  </tr>
+                  <div class="col-md-12">
+                    <h6>Type Nature</h6>
+                    <div class="form-group">
+                      <label for="id_Type_Nature">{{form.Type_Nature}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Zone</h6>
+                    <div class="form-group">
+                      <label for="id_Zone">{{form.Zone}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Flat</h6>
+                    <div class="form-group">
+                      <label for="id_Flat">{{form.Flat}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Building</h6>
+                    <div class="form-group">
+                      <label for="id_Building">{{form.Building}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Floor</h6>
+                    <div class="form-group">
+                      <label for="id_Floor">{{form.Floor}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Complaint Details</h6>
+                    <div class="form-group">
+                      <label for="id_Complaint_Details"
+                        >{{form.Complaint_Details}}</label
+                      >
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-12">
+                    <h6>Image-1</h6>
+                    <div class="form-group">
+                      <label for="id_image_1"
+                        >{{form.image_1}}</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <h6>Image-2</h6>
+                    <div class="form-group">
+                      <label for="id_image_2"
+                        >{{form.image_2}}</label
+                      >
+                    </div>
+                  </div> -->
+                </table>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="submit" class="btn btn-success btn-block" style='background-color: #1B2431 !important'>
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document
+      .getElementById("id_Maintenance_Type")
+      .addEventListener("change", function () {
+        showMe();
+      });
+    document.getElementById("id_Civil").style.display = "none";
+    document.getElementById("id_MEP").style.display = "none";
+    function showMe() {
+      var e = document.getElementById("id_Maintenance_Type").value;
+      //console.log(e);
+      if (e == "Civil") {
+        //console.log('CIVIL');
+        document.getElementById("id_Civil").style.display = "block";
+        document.getElementById("id_MEP").style.display = "none";
+      } else if (e == "MEP") {
+        //console.log('MEP');
+        document.getElementById("id_Civil").style.display = "none";
+        document.getElementById("id_MEP").style.display = "block";
+      }
+    }
+  </script>
+  {% endblock %}
+</div>

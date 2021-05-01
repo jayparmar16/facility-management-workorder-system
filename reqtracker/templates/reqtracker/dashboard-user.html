@@ -1,0 +1,284 @@
+{% extends 'reqtracker/dashboard.html' %}
+{% load static %}
+{% block content %}
+<head>
+    <title>User dashboard</title>
+</head>
+
+<div class="container" style="width: 75%;padding-top: 100px;">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card card-body">
+          <h5>Status</h5>
+          <canvas id="pie-chart"></canvas>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card card-body">
+          <h5>Maintenance Type</h5>
+          <canvas id="pie-chart1"></canvas>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="user-cont" style='padding: 100px 20px 20px 20px;'>
+    <h5>Requests</h5>
+    <div class="row">
+        <div class="col-md-3">
+        <button
+            id='p'
+            class="btn btn-primary btn-block"
+            >Pending</a
+        ></button>
+        </div>
+        <div class="col-md-3">
+        <button
+            id='inp'
+            class="btn btn-primary btn-block"
+            >In Progress</a
+        ></button>
+        </div>
+        <div class="col-md-3">
+        <button
+            id='c'
+            class="btn btn-primary btn-block"
+            >Completed</a
+        ></button>
+        </div>
+    </div>
+
+    <!-- ######### PENDING REQUESTS ######### -->
+  <div class="row"  style="margin-right: 0px; margin-left: 0px;" id='p1'>
+    <div class="col-md-9">
+      <hr/>
+      
+        {% if queryset.count == 0 %}
+          <h5 style='text-align:center'>There aren't any Pending requests at this moment !</h5>
+        {% endif %}
+        {% for o in queryset %}
+        <table class="table table-sm">
+          <tr id='headings'>
+            <th>Request Number</th>
+            <th>Nature</th>
+            <th>Request Date</th>
+            <th>Expected Date</th>
+            <th>Status</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+
+          <tr id='values'>
+            <td>{{o.Request_Number}}</td>
+            <td>{{o.Maintenance_Type}}</td>
+            <td>{{o.date_created | date:"F d Y"}}</td>
+            {% if o.Type_Nature == 'Normal' %}
+            <td>{{o.expected_date_n | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Urgent' %}
+            <td>{{o.expected_date_u | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Emergency' %}
+            <td>{{o.expected_date_i | date:"F d Y"}}</td>
+            {% else %}
+            <td>{{o.expected_date_o | date:"F d Y"}}</td>
+            {% endif %}
+            <td>{{o.status}}</td>
+            <td><a href="/view_request/{{o.id}}" class="btn btn-primary btn-sm btn-block">View</a></td>
+            <td><a href="/update_request/user/{{o.id}}" class="btn btn-primary btn-sm btn-block">Update</a></td>
+            <td><a href="/delete_request/{{o.id}}" class="btn btn-primary btn-sm btn-block">Delete</a></td>
+          </tr>
+        </table>
+        {% endfor %} 
+      
+    </div>
+    <div class="col-md-3">
+        <hr>
+          <a href="{% url 'create_request' %}" class="btn btn-primary btn-block">Create a request</a>        
+    </div>
+  </div>
+  <!-- ######### END - PENDING REQUESTS ######### -->
+
+  <!-- ######### IN-PROGRESS REQUESTS ######### -->
+  <div class="row" style="margin-right: 0px; margin-left: 0px;" id='i1'>
+    <div class="col-md-9">
+      <hr/>
+      
+        {% if queryset1.count == 0 %}
+            <h5 style='text-align:center'>There aren't any In-Progress requests at this moment !</h5>
+        {% endif %}
+        {% for o in queryset1 %}
+        <table class="table table-sm">
+          <tr id='headings'>
+            <th>Request Number</th>
+            <th>Nature</th>
+            <th>Request Date</th>
+            <th>Expected Date</th>
+            <th>Status</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+
+          <tr id='values'>
+            <td>{{o.Request_Number}}</td>
+            <td>{{o.Maintenance_Type}}</td>
+            <td>{{o.date_created | date:"F d Y"}}</td>
+            {% if o.Type_Nature == 'Normal' %}
+            <td>{{o.expected_date_n | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Urgent' %}
+            <td>{{o.expected_date_u | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Emergency' %}
+            <td>{{o.expected_date_i | date:"F d Y"}}</td>
+            {% else %}
+            <td>{{o.expected_date_o | date:"F d Y"}}</td>
+            {% endif %}
+            <td>{{o.status}}</td>
+            <td><a href="/view_request/{{o.id}}" class="btn btn-primary btn-sm btn-block">View</a></td>
+            <td><a href="/update_request/user/{{o.id}}" class="btn btn-primary btn-sm btn-block">Update</a></td>
+            <td><a href="/delete_request/{{o.id}}" class="btn btn-primary btn-sm btn-block">Delete</a></td>
+          </tr>
+        </table>
+        {% endfor %} 
+      
+    </div>
+    <div class="col-md-3">
+        <hr>
+        <a href="{% url 'create_request' %}" class="btn btn-primary btn-block">Create a request</a>
+    </div>
+  </div>
+  <!-- ######### END - IN PROGRESS REQUESTS ######### -->
+
+  <!-- ######### COMPLETED REQUEST ######### -->
+  <div class="row" style="margin-right: 0px; margin-left: 0px;" id='c1'>
+    <div class="col-md-9">
+      <hr/>
+      
+        {% if queryset2.count == 0 %}
+            <h5 style='text-align:center'>There aren't any completed requests at this moment !</h5>
+        {% endif %}
+        {% for o in queryset2 %}
+        <table class="table table-sm">
+          <tr id='headings' >
+            <th>Request Number</th>
+            <th>Nature</th>
+            <th>Request Date</th>
+            <th>Expected Date</th>
+            <th>Status</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+
+          <tr id='values'>
+            <td>{{o.Request_Number}}</td>
+            <td>{{o.Maintenance_Type}}</td>
+            <td>{{o.date_created | date:"F d Y"}}</td>
+            {% if o.Type_Nature == 'Normal' %}
+            <td>{{o.expected_date_n | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Urgent' %}
+            <td>{{o.expected_date_u | date:"F d Y"}}</td>
+            {% elif o.Type_Nature == 'Emergency' %}
+            <td>{{o.expected_date_i | date:"F d Y"}}</td>
+            {% else %}
+            <td>{{o.expected_date_o | date:"F d Y"}}</td>
+            {% endif %}
+            <td>{{o.status}}</td>
+            <td><a href="/view_request/{{o.id}}" class="btn btn-primary btn-block">View</a></td>
+            <td><a href="/update_request/user/{{o.id}}" class="btn btn-primary btn-block">Update</a></td>
+            <td><a href="/delete_request/{{o.id}}" class="btn btn-primary btn-block">Delete</a></td>
+          </tr>
+        </table>
+        {% endfor %} 
+      
+    </div>
+    <div class="col-md-3">
+        <hr>
+        
+            <a href="{% url 'create_request' %}" class="btn btn-primary btn-block">Create a request</a>
+        
+    </div>
+  </div>
+  <!-- ######### END - COMPLETED REQUESTS ######### -->
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+    var ctx = document.getElementById('pie-chart').getContext('2d');
+    var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'pie',
+  
+    // The data for our dataset
+    data: {
+        labels: {{labels|safe}},
+        datasets: [{
+            label: 'Status',
+            backgroundColor: ['#017371', '#56FCA2', '#A09BD7'],
+            borderColor: '#F5F5F5',
+            data: {{data|safe}}
+        }]
+    },
+  
+    // Configuration options go here
+    options: {
+      legend: {
+          labels: {
+            fontColor: "white",
+            fontSize : 15
+      }
+    }
+    }
+    });
+  var ctx1 = document.getElementById('pie-chart1').getContext('2d');
+    var chart = new Chart(ctx1, {
+    // The type of chart we want to create
+    type: 'pie',
+  
+    // The data for our dataset
+    data: {
+        labels: {{labels1|safe}},
+        datasets: [{
+            label: 'Maintenance Type',
+            backgroundColor: ['#017371', '#56FCA2', '#A09BD7'],
+            borderColor: '#F5F5F5',
+            data: {{data1|safe}}
+        }]
+    },
+  
+    // Configuration options go here
+    options: {
+      legend: {
+          labels: {
+            fontColor: "white",
+            fontSize : 15
+      }
+    }
+    }
+    });
+
+    // On page loading of pending, in-p , completed and today's requests
+    document.getElementById("c1").style.display = "none";
+    document.getElementById("i1").style.display = "none";
+  document.getElementById("p").addEventListener("click", function() {
+
+    document.getElementById("p1").style.display = "flex";
+    document.getElementById("i1").style.display = "none";
+    document.getElementById("c1").style.display = "none";
+  });
+  document.getElementById("inp").addEventListener("click", function() {
+
+    document.getElementById("p1").style.display = "none";
+    document.getElementById("i1").style.display = "flex";
+    document.getElementById("c1").style.display = "none";
+
+  });
+  document.getElementById("c").addEventListener("click", function() {
+
+    document.getElementById("p1").style.display = "none";
+    document.getElementById("i1").style.display = "none";
+    document.getElementById("c1").style.display = "flex";
+
+  });
+</script>
+{% endblock %}

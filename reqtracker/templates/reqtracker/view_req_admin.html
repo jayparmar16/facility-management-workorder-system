@@ -1,0 +1,153 @@
+{% extends 'reqtracker/dashboard.html' %}
+{% block content %}
+<div class="user-cont" style='padding-top: 100px'></div>
+    <div class="row" style=' margin-right: 0px;margin-left: 0px;'>
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>User:</h5>
+                <hr>
+                <a class="btn btn-outline-info  btn-sm btn-block" href="">Update User</a>
+                <a class="btn btn-outline-danger  btn-sm btn-block" href="">Delete User</a>
+
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Contact Information</h5>
+                <hr>
+                <p><strong>Name: </strong>{{user.name}}</p>
+                <p><strong>Email: </strong>{{user.email}}</p>
+                <p><strong>Phone: </strong> {{user.phone_no}}</p>
+            </div>
+        </div>
+
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Total Requests</h5>
+                <hr>
+                <h1 style="text-align: center;padding: 10px">{{count}}</h1>
+            </div>
+        </div>
+    </div>
+
+   
+
+
+<br>
+<h5 style='padding-left: 22px'>Requests</h5>
+    <div class="row" style=' margin-right: 0px;margin-left: 0px;'>
+        
+        {% for o in req %}
+        <div class="col-md-8"> 
+            <hr>
+            <div class="card card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <th>Request Number</th>
+                        <th>Nature</th>
+                        <th>Request Date</th>
+                        <th>Expected Date</th>
+                        <th>Status</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>{{o.Request_Number}}</td>
+                        <td>{{o.Maintenance_Type}}</td>
+                        <td>{{o.date_created | date:"F d Y"}}</td>
+                            {% if o.Type_Nature == 'Normal' %}
+                                <td>{{o.expected_date_n | date:"F d Y"}}</td>
+                            {% elif o.Type_Nature == 'Urgent' %}
+                                <td>{{o.expected_date_u | date:"F d Y"}}</td>
+                            {% elif o.Type_Nature == 'Emergency' %}
+                                <td>{{o.expected_date_i | date:"F d Y"}}</td>
+                            {% else %}  
+                                <td>{{o.expected_date_o | date:"F d Y"}}</td>
+                            {% endif %}
+                        <td>{{o.status}}</td>
+                    </tr>
+                    
+                </table>
+            </div>
+        </div>
+        <div class="col-md">
+            <hr>
+            <div class="card card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <th>Request By</th>
+                        <td>{{o.user}}</td>
+                    </tr>
+                    <tr>
+                        <th>Request Number</th>
+                        <td>{{o.Request_Number}}</td>
+                    </tr>
+                    <tr>
+                        <th>Maintenance</th>
+                        <td>{{o.Maintenance}}</td>
+                    </tr>
+                    <tr>
+                        <th>Maintenance Type</th>
+                        <td>{{o.Maintenance_Type}}</td>
+                    </tr>
+                    <tr>
+                        <th>Nature</th>
+                        <td>{{o.Nature_Civil}}</td>
+                    </tr>
+                    <tr>
+                        <th>Nature</th>
+                        <td>{{o.Nature_MEP}}</td>
+                    </tr>
+                    <tr>
+                        <th>Type</th>
+                        <td>{{o.Type_Nature}}</td>
+                    </tr>
+                    <tr>
+                        <th>Zone</th>
+                        <td>{{o.Zone}}</td>
+                    </tr>
+                    <tr>
+                        <th>Flat</th>
+                        <td>{{o.Flat}}</td>
+                    </tr>
+                    <tr>
+                        <th>Building</th>
+                        <td>{{o.Building}}</td>
+                    </tr>
+                    <tr>
+                        <th>Floor</th>
+                        <td>{{o.Floor}}</td>
+                    </tr>
+                    <tr>
+                        <th>Request Date</th>
+                        <td>{{o.date_created | date:"F d Y"}}</td>
+                    </tr>
+                    <tr>
+                        <th>Expected Date</th>
+                        {% if o.Type_Nature == 'N' %}
+                            <td>{{o.expected_date_n | date:"F d Y"}}</td>
+                        {% elif o.Type_Nature == 'U' %}
+                            <td>{{o.expected_date_u | date:"F d Y"}}</td>
+                        {% elif o.Type_Nature == 'E' %}
+                            <td>{{o.expected_date_i | date:"F d Y"}}</td>
+                        {% else %}  
+                            <td>{{o.expected_date_o | date:"F d Y"}}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th>Complaint Details</th>
+                        <td>{{o.Complaint_Details}}</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>{{o.status}}</td>
+                    </tr>
+                    
+                </table>    
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

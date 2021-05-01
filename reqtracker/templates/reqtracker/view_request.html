@@ -1,0 +1,109 @@
+{% extends 'reqtracker/dashboard.html' %} {% block content %}
+<style>
+  tr{
+    background-color:#5881a7;
+  }
+  tr{
+      background-color:white;
+      color:black;
+      border:1px;
+    }
+    table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    }
+    th{
+      font-weight: 1000;
+    }
+</style>
+<div class="user-cont" style="padding: 100px 20px 20px 20px">
+  <div class="row">
+    <div class="col-md">
+      <hr/>
+      
+        <table class="table table-sm">
+          <tr>
+            <th>Request By</th>
+            <td>{{requ.user}}</td>
+          </tr>
+          <tr>
+            <th>Request Number</th>
+            <td>{{requ.Request_Number}}</td>
+          </tr>
+          <tr>
+            <th>Maintenance</th>
+            <td>{{requ.Maintenance}}</td>
+          </tr>
+          <tr>
+            <th>Maintenance Type</th>
+            <td>{{requ.Maintenance_Type}}</td>
+          </tr>
+          {% if requ.Maintenance_Type == 'Civil' %}
+          <tr>
+            <th>Nature</th>
+            <td>{{requ.Nature_Civil}}</td>
+          </tr>
+          {% elif requ.Maintenance_Type == 'MEP' %}
+          <tr>
+            <th>Nature</th>
+            <td>{{requ.Nature_MEP}}</td>
+          </tr>
+          {% endif %}
+          <tr>
+            <th>Type</th>
+            <td>{{requ.Type_Nature}}</td>
+          </tr>
+          <tr>
+            <th>Zone</th>
+            <td>{{requ.Zone}}</td>
+          </tr>
+          <tr>
+            <th>Flat</th>
+            <td>{{requ.Flat}}</td>
+          </tr>
+          <tr>
+            <th>Building</th>
+            <td>{{requ.Building}}</td>
+          </tr>
+          <tr>
+            <th>Floor</th>
+            <td>{{requ.Floor}}</td>
+          </tr>
+          <tr>
+            <th>Request Date</th>
+            <td>{{requ.date_created | date:"F d Y"}}</td>
+          </tr>
+          <tr>
+            <th>Expected Date</th>
+            {% if requ.Type_Nature == 'Normal' %}
+            <td>{{requ.expected_date_n | date:"F d Y"}}</td>
+            {% elif requ.Type_Nature == 'Urgent' %}
+            <td>{{requ.expected_date_u | date:"F d Y"}}</td>
+            {% elif i.Type_Nature == 'Emergency' %}
+            <td>{{requ.expected_date_i | date:"F d Y"}}</td>
+            {% else %}
+            <td>{{requ.expected_date_o | date:"F d Y"}}</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <th>Complaint Details</th>
+            <td>{{requ.Complaint_Details}}</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td>{{requ.status}}</td>
+          </tr>
+          <!-- <tr>
+            <th>Image_1</th>
+            <td><img src="{{requ.image_1.url}}" alt=""></td>
+          </tr>
+          <tr>
+            <th>Image_2</th>
+            <td><img src="{{requ.image_2.url}}" alt=""></td>
+          </tr> -->
+        </table>
+      
+    </div>
+  </div>
+</div>
+{% endblock %}

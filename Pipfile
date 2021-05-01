@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==3.0"
+django-crispy-forms = "*"
+django-currentuser = "*"
+psycopg2 = "*"
+python-decouple = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
